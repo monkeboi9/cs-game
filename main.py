@@ -9,7 +9,6 @@ maze = maze.Maze(WINDOW_DIMENSIONS // UNIT)
 maze.generate_maze()
 pygame.init()
 screen = pygame.display.set_mode((WINDOW_DIMENSIONS, WINDOW_DIMENSIONS))
-print(maze.data)
 exit = False
 while not exit: 
     for event in pygame.event.get(): 
