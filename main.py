@@ -3,10 +3,12 @@ import visuals
 import maze
 
 
-WINDOW_DIMENSIONS = 1200
-UNIT = 1200 // int(input("dimensions of maze: "))
+WINDOW_DIMENSIONS = 1000 
+UNIT = WINDOW_DIMENSIONS // int(input("dimensions of maze: "))
 maze = maze.Maze(WINDOW_DIMENSIONS // UNIT)
 maze.generate_maze()
+maze.make_start_pos()
+maze.make_end_pos()
 pygame.init()
 screen = pygame.display.set_mode((WINDOW_DIMENSIONS, WINDOW_DIMENSIONS))
 exit = False

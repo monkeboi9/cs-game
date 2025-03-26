@@ -41,3 +41,18 @@ class Maze:
         self.calculate_frontiers(random_x, random_y)
         while self.frontiers:
             self.create_path()
+            
+    def make_start_pos(self):
+        possible_cords = [(0, 0), (0, 1), (1, 0), (1, 1)]
+        for i in possible_cords:
+            if self.data[i[0], i[1]] == 0:
+                self.data[i[0], i[1]] = 2
+                return [i[0], i[1]]
+    def make_end_pos(self):
+        edge = self.dimensions - 1
+        inner = edge - 1
+        possible_cords = [(edge, edge), (edge, inner), (inner, inner), (inner, edge)]
+        for i in possible_cords:
+            if self.data[i[0], i[1]] == 0:
+                self.data[i[0], i[1]] = 3
+                return [i[0], i[1]]
