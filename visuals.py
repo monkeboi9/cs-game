@@ -24,4 +24,3 @@ class Assets:
         self.background_rect = self.background.get_rect()
         self.character = pygame.image.load("assets/character.png")
         self.character = pygame.transform.scale(self.character, (unit, unit))
-        self.character_rect = self.character.get_rect()
