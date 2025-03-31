@@ -19,7 +19,7 @@ class Game:
         self.first_layer.fill((255, 255, 255, 0))
         self.finished_maze()
         self.window.blit(self.assets.background, self.assets.background_rect)
-        visuals.draw_maze_data(self.assets.character, self.assets.character_rect, self.MAZE_UNIT, self.first_layer, self.maze.data)
+        visuals.draw_maze_data(self.assets.character, self.MAZE_UNIT, self.first_layer, self.maze.data)
         self.window.blit(self.first_layer, (0, 0))
         pygame.display.update()
     def generate_level(self):
