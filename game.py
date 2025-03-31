@@ -13,12 +13,13 @@ class Game:
         pygame.init()
         self.window = pygame.display.set_mode((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION)) 
         self.first_layer = pygame.Surface((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION), pygame.SRCALPHA)
+        self.assets = visuals.Assets(self.WINDOW_RESOLUTION, self.MAZE_UNIT)
     def update(self):
         self.check_events()
         self.first_layer.fill((255, 255, 255, 0))
         self.finished_maze()
-        visuals.draw_background(self.WINDOW_RESOLUTION, self.window)
-        visuals.draw_maze_data(self.MAZE_UNIT, self.first_layer, self.maze.data)
+        self.window.blit(self.assets.background, self.assets.background_rect)
+        visuals.draw_maze_data(self.assets.character, self.assets.character_rect, self.MAZE_UNIT, self.first_layer, self.maze.data)
         self.window.blit(self.first_layer, (0, 0))
         pygame.display.update()
     def generate_level(self):
