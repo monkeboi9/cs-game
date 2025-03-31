@@ -6,18 +6,20 @@ import pygame
 
 class Game:
     def __init__(self):
-        self.WINDOW_RESOLUTION = 1000
+        self.WINDOW_RESOLUTION = 1200
         self.MAZE_UNIT = self.WINDOW_RESOLUTION // int(input("dimensions of maze: "))
         self.maze = Maze(self.WINDOW_RESOLUTION // self.MAZE_UNIT)
         self.generate_level()
-        print("start:", self.player.pos)
         pygame.init()
-        self.screen = pygame.display.set_mode((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION)) 
+        self.window = pygame.display.set_mode((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION)) 
+        self.first_layer = pygame.Surface((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION), pygame.SRCALPHA)
     def update(self):
         self.check_events()
-        self.screen.fill((255, 255, 255))
+        self.first_layer.fill((255, 255, 255, 0))
         self.finished_maze()
-        visuals.draw_maze_data(self.MAZE_UNIT, self.screen, self.maze.data)
+        visuals.draw_background(self.WINDOW_RESOLUTION, self.window)
+        visuals.draw_maze_data(self.MAZE_UNIT, self.first_layer, self.maze.data)
+        self.window.blit(self.first_layer, (0, 0))
         pygame.display.update()
     def generate_level(self):
         self.maze.generate_maze()
@@ -45,10 +47,7 @@ class Game:
         if key_type == pygame.K_s:
             change = (0, 1)
         self.maze.move_cell(self.player.pos, change)
-        print("player:", self.player.pos)
         new_pos = tuple(map(sum, zip(self.player.pos, change)))
         if self.maze.is_valid(new_pos):
             if self.maze.data[new_pos] != 1:
                 self.player.pos = new_pos
-    def next_level(self):
-        pass

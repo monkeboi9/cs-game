@@ -28,8 +28,8 @@ class Maze:
         if connecting_cells:
             connecting_cell = random.choice(connecting_cells)
             cell_between = ((selected_frontier[0] + connecting_cell[0]) // 2, (selected_frontier[1] + connecting_cell[1]) // 2)
-            self.data[cell_between[0], cell_between[1]] = 0
-            self.data[selected_frontier[0], selected_frontier[1]] = 0
+            self.data[cell_between] = 0
+            self.data[selected_frontier] = 0
             self.calculate_frontiers(selected_frontier[0], selected_frontier[1])
             self.frontiers = list(set(self.frontiers))
     def generate_maze(self):
@@ -55,7 +55,7 @@ class Maze:
             if self.data[i] == 0:
                 self.data[i] = 3
                 self.end_pos = i
-                return [i]
+                return i
     def move_cell(self, cord, change):
         if self.is_valid(cord, change):
             new_cord = tuple(map(sum, zip(cord, change)))

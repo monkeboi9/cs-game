@@ -1,10 +1,10 @@
 import pygame
 
 def draw_maze_data(unit_size, screen, data):
-    BLACK = (0, 0, 0)
-    YELLOW = (0xFF, 0xFF, 0)
-    LIGHT_PURPLE = (0xDF, 0x70, 0xFF)
-    LIGHT_GREEN = (0x90, 0xee, 0x90)
+    transparency = 0xE0
+    BLACK = (0x0, 0x0, 0x0, transparency)
+    YELLOW = (0xFF, 0xFF, 0x0, transparency)
+    LIGHT_GREEN = (0x90, 0xee, 0x90, transparency)
     current_x = 0
     current_y = 0
     for y in range(data.shape[1]):
@@ -18,3 +18,8 @@ def draw_maze_data(unit_size, screen, data):
             current_x += unit_size
         current_x = 0
         current_y += unit_size
+def draw_background(resolution, screen):
+    background = pygame.image.load("assets/background.jpg")
+    background = pygame.transform.scale(background, (resolution, resolution))
+    imagerect = background.get_rect()
+    screen.blit(background, imagerect)
