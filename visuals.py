@@ -1,6 +1,6 @@
 import pygame
 
-def draw_maze_data(character, character_rect, unit_size, screen, data):
+def draw_maze_data(character, unit_size, screen, data):
     transparency = 0xE0
     BLACK = (0x0, 0x0, 0x0, transparency)
     LIGHT_GREEN = (0x90, 0xee, 0x90, transparency)
