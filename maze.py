@@ -1,11 +1,20 @@
 import numpy as np
 import random
 
+# This class is a 2d numpy array that represents the maze.
+# The data in this includes which coordinates are the player, empty space, wall, enemie, etc.
+# This maze is randomly generated using a modified version of prims algorithm
+# Link to description of algorithm: https://en.wikipedia.org/wiki/Maze_generation_algorithm#Iterative_randomized_Prim's_algorithm_(without_stack,_without_sets)
 class Maze:
     def __init__(self, dimensions):
+        # Starts off by creating a square 2d numpy array full of ones.
+        # This array is dimensions^2 so it matches up with the frontend.
         self.data = np.ones((dimensions, dimensions), dtype=int)
         self.dimensions = dimensions
+        # The start pos are the coordinates were the player will spawn.
+        # (0, 0) is a placeholder value because the maze might generate over it.
         self.start_pos = (0, 0)
+        # Another placeholder value for the end pos
         self.end_pos = (dimensions - 1, dimensions - 1)
         self.frontiers = []
     def calculate_frontiers(self, x: int, y: int):
@@ -47,6 +56,7 @@ class Maze:
                 self.data[i] = 2
                 self.start_pos = i
                 return i
+    # This function calculates the four possible end positions in the bottom left corner and sets end_pos to it.
     def make_end_pos(self):
         edge = self.dimensions - 1
         inner = edge - 1
@@ -62,9 +72,15 @@ class Maze:
             if self.data[new_cord] == 0:
                 self.data[new_cord] = self.data[cord]
                 self.data[cord] = 0
+    # This function checks whether or not a coordinate is inbounds to prevent an array out of bounds error.
     def is_valid(self, cord, change = (0, 0)):
+        # Adds the coordinate and the change variable together to produce the new coordinate.
+        # For example, cord could be the current position and change could be the direction it is going towards.
         new_cord = tuple(map(sum, zip(cord, change)))
+        # Checks if the x and y of the new cord is inbounds using greater than and less than operators.
         if new_cord[0] > -1 and new_cord[0] < self.dimensions and new_cord[1] > -1 and new_cord[1] < self.dimensions:
+            # Returns true if the coordinate is not out of bounds;
             return True
         else:
+            # Returns false if it is out of bounds.
             return False

@@ -6,8 +6,8 @@ import pygame
 
 class Game:
     def __init__(self):
-        self.WINDOW_RESOLUTION = 1200
-        self.MAZE_UNIT = self.WINDOW_RESOLUTION // int(input("dimensions of maze: "))
+        self.WINDOW_RESOLUTION = 1000
+        self.MAZE_UNIT = self.WINDOW_RESOLUTION // int(input("Maze dimensions:"))
         self.maze = Maze(self.WINDOW_RESOLUTION // self.MAZE_UNIT)
         self.generate_level()
         pygame.init()
@@ -19,6 +19,7 @@ class Game:
         self.first_layer.fill((255, 255, 255, 0))
         self.finished_maze()
         self.window.blit(self.assets.background, self.assets.background_rect)
+        self.window.fill((0xFF, 0xFF, 0xFF))
         visuals.draw_maze_data(self.assets.character, self.MAZE_UNIT, self.first_layer, self.maze.data)
         self.window.blit(self.first_layer, (0, 0))
         pygame.display.update()
