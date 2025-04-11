@@ -9,6 +9,7 @@ class Game:
         self.WINDOW_RESOLUTION = 1000
         self.MAZE_UNIT = self.WINDOW_RESOLUTION // int(input("Maze dimensions:"))
         self.maze = Maze(self.WINDOW_RESOLUTION // self.MAZE_UNIT)
+        self.level_number = 1
         self.generate_level()
         pygame.init()
         self.window = pygame.display.set_mode((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION)) 
@@ -16,11 +17,10 @@ class Game:
         self.assets = visuals.Assets(self.WINDOW_RESOLUTION, self.MAZE_UNIT)
     def update(self):
         self.check_events()
-        self.first_layer.fill((255, 255, 255, 0))
+        self.first_layer.fill((0xFF, 0xFF, 0xFF, 0x0))
         self.finished_maze()
         self.window.blit(self.assets.background, self.assets.background_rect)
-        self.window.fill((0xFF, 0xFF, 0xFF))
-        visuals.draw_maze_data(self.assets.character, self.MAZE_UNIT, self.first_layer, self.maze.data)
+        visuals.draw_maze_data(self.assets, self.MAZE_UNIT, self.first_layer, self.maze.data, self.player.direction)
         self.window.blit(self.first_layer, (0, 0))
         pygame.display.update()
     def generate_level(self):
@@ -28,6 +28,7 @@ class Game:
         self.maze.make_start_pos()
         self.maze.make_end_pos()
         self.player = Player(self.maze.start_pos)
+        self.level_number += 1
     def finished_maze(self):
         if self.player.pos == self.maze.end_pos:
             self.generate_level()
@@ -42,12 +43,16 @@ class Game:
         change = (0, 0)
         if key_type == pygame.K_a:
             change = (-1, 0)
+            self.player.direction = "left"
         if key_type == pygame.K_d:
             change = (1, 0)
+            self.player.direction = "right"
         if key_type == pygame.K_w:
             change = (0, -1)
+            self.player.direction = "up"
         if key_type == pygame.K_s:
             change = (0, 1)
+            self.player.direction = "down"
         self.maze.move_cell(self.player.pos, change)
         new_pos = tuple(map(sum, zip(self.player.pos, change)))
         if self.maze.is_valid(new_pos):
