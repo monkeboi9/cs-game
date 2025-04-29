@@ -1,28 +1,21 @@
 import sys
 from maze import Maze
 from player import Player
-import visuals
+from visuals import Visuals
 import pygame
 
 class Game:
     def __init__(self):
-        self.WINDOW_RESOLUTION = 1000
-        self.MAZE_UNIT = self.WINDOW_RESOLUTION // int(input("Maze dimensions:"))
-        self.maze = Maze(self.WINDOW_RESOLUTION // self.MAZE_UNIT)
+        RESOLUTION = 1000
+        self.visuals = Visuals(RESOLUTION)
+        self.maze = Maze(RESOLUTION // self.visuals.UNIT_RES)
         self.level_number = 1
         self.generate_level()
         pygame.init()
-        self.window = pygame.display.set_mode((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION)) 
-        self.first_layer = pygame.Surface((self.WINDOW_RESOLUTION, self.WINDOW_RESOLUTION), pygame.SRCALPHA)
-        self.assets = visuals.Assets(self.WINDOW_RESOLUTION, self.MAZE_UNIT)
     def update(self):
         self.check_events()
-        self.first_layer.fill((0xFF, 0xFF, 0xFF, 0x0))
         self.finished_maze()
-        self.window.blit(self.assets.background, self.assets.background_rect)
-        visuals.draw_maze_data(self.assets, self.MAZE_UNIT, self.first_layer, self.maze.data, self.player.direction)
-        self.window.blit(self.first_layer, (0, 0))
-        pygame.display.update()
+        self.visuals.draw(self.maze.data, self.player.direction)
     def generate_level(self):
         self.maze.generate_maze()
         self.maze.make_start_pos()
@@ -53,6 +46,8 @@ class Game:
         if key_type == pygame.K_s:
             change = (0, 1)
             self.player.direction = "down"
+        if key_type == pygame.K_r:
+            self.generate_level()
         self.maze.move_cell(self.player.pos, change)
         new_pos = tuple(map(sum, zip(self.player.pos, change)))
         if self.maze.is_valid(new_pos):

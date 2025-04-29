@@ -1,5 +1,5 @@
-import game
+from game import Game
 
-game = game.Game()
+game = Game()
 while True:
     game.update()
