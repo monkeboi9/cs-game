@@ -11,11 +11,14 @@ class Game:
         self.maze = Maze(RESOLUTION // self.visuals.UNIT_RES)
         self.level_number = 1
         self.generate_level()
+        self.clock = pygame.time.Clock()
         pygame.init()
     def update(self):
         self.check_events()
+        self.check_keys()
         self.finished_maze()
         self.visuals.draw(self.maze.data, self.player.direction)
+        self.clock.tick(15)
     def generate_level(self):
         self.maze.generate_maze()
         self.maze.make_start_pos()
@@ -30,22 +33,22 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                self.check_keys(event.key)
-    def check_keys(self, key_type):
+    def check_keys(self):
+        keys = pygame.key.get_pressed()
         change = (0, 0)
-        if key_type == pygame.K_a:
+        if keys[pygame.K_a]:
             change = (-1, 0)
             self.player.direction = "left"
-        elif key_type == pygame.K_d:
+        elif keys[pygame.K_d]:
             change = (1, 0)
             self.player.direction = "right"
-        elif key_type == pygame.K_w:
+        elif keys[pygame.K_w]:
             change = (0, -1)
             self.player.direction = "up"
-        elif key_type == pygame.K_s:
+        elif keys[pygame.K_s]:
             change = (0, 1)
             self.player.direction = "down"
-        if key_type == pygame.K_r:
+        if keys[pygame.K_r]:
             self.generate_level()
-        self.player.pos = self.maze.move_cell(self.player.pos, change)
+        if change != (0,0):
+            self.player.pos = self.maze.move_cell(self.player.pos, change)
