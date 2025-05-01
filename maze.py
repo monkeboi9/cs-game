@@ -72,7 +72,6 @@ class Maze:
             if self.data[new_cord] != 1:
                 self.data[new_cord] = self.data[cord]
                 self.data[cord] = 0
-                print(self.data[new_cord])
                 return new_cord
         return cord
     # This function checks whether or not a coordinate is inbounds to prevent an array out of bounds error.
