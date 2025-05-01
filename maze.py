@@ -15,7 +15,7 @@ class Maze:
         # (0, 0) is a placeholder value because the maze might generate over it.
         self.start_pos = (0, 0)
         # Another placeholder value for the end pos
-        self.end_pos = (dimensions - 1, dimensions - 1)
+        self.end_pos = [dimensions - 1, dimensions - 1]
         self.frontiers = []
     def calculate_frontiers(self, x: int, y: int):
         frontiers = self.two_away(x, y, 1)
