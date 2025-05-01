@@ -31,7 +31,9 @@ class Visuals:
                 elif data[x, y] == 3:
                     pygame.draw.rect(self.first_layer, LIGHT_GREEN, pygame.Rect(current_x, current_y, self.UNIT_RES, self.UNIT_RES))
                 elif data[x, y] == 4:
-                    pygame.draw.rect(self.first_layer, RED, pygame.Rect(current_x, current_y, self.UNIT_RES, self.UNIT_RES))
+                    self.first_layer.blit(self.assets.worm, (current_x, current_y))
+                elif data[x, y] == 5:
+                    self.first_layer.blit(self.assets.key, (current_x, current_y))
                 current_x += self.UNIT_RES
             current_x = 0
             current_y += self.UNIT_RES
@@ -65,6 +67,8 @@ class Assets:
         self.up = self.load_and_scale("assets/up.png", unit)
         self.left = self.load_and_scale("assets/left.png", unit)
         self.right = self.load_and_scale("assets/right.png", unit)
+        self.key = self.load_and_scale("assets/key.png", unit)
+        self.worm = self.load_and_scale("assets/worm.png", unit)
     def load_splash_screens(self, resolution):
         self.studio_splash = self.load_and_scale("assets/studio.png", resolution)
         self.studio_splash_rect = self.studio_splash.get_rect()

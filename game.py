@@ -3,6 +3,7 @@ from maze import Maze
 from player import Player
 from visuals import Visuals
 from enemy import Enemy
+import entity
 import pygame
 
 class Game:
@@ -21,6 +22,7 @@ class Game:
     def update(self):
         self.check_events()
         self.check_keys()
+        self.check_key()
         self.finished_maze()
         self.check_toggle()
         self.check_enemies()
@@ -38,21 +40,29 @@ class Game:
         self.maze.make_end_pos()
         self.player = Player(self.maze.start_pos)
         self.enemy = Enemy(self.maze, self.maze.dimensions // 2)
+        self.key = entity.spawn(self.maze, 5)
         self.level_number += 1
     def finished_maze(self):
-        if self.player.pos == self.maze.end_pos:
-            self.generate_level()
+            if self.player.pos == self.maze.end_pos:
+                if self.player.has_key:
+                    self.generate_level()
+                else:
+                    self.kill_player()
+    def check_key(self):
+        if self.player.pos == self.key.pos:
+            self.player.has_key = True
     def check_enemies(self):
         if self.toggle_state:
             for enemy in self.enemy.entities:
                 if self.player.pos == enemy.pos:
                     self.kill_player(enemy)
                     break
-    def kill_player(self, enemy):
+    def kill_player(self, enemy=-1):
         self.maze.data[self.player.pos] = 0
         self.maze.data[self.maze.start_pos] = 2 
         self.player.pos = self.maze.start_pos
-        self.enemy.entities.remove(enemy)
+        if enemy != -1:
+            self.enemy.entities.remove(enemy)
         self.player.hearts -= 1
     def check_events(self):
         for event in pygame.event.get():

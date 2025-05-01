@@ -1,19 +1,11 @@
-from entity import Entity
-import random
+import entity
 
 class Enemy:
     def __init__(self, maze, amount):
         self.number = amount
         self.entities = []
-        for enemy in range(amount):
-            self.spawn_random(maze)
-    def spawn_random(self, maze):
-        while True:
-            cord = (random.randrange(0, maze.dimensions), random.randrange(0, maze.dimensions))
-            if maze.data[cord] == 0:
-                self.entities.append(Entity(cord, 4))            
-                maze.data[cord] = 4
-                break
+        for _ in range(amount):
+            self.entities.append(entity.spawn(maze, 4))
     def toggle(self, maze, state):
         toggle_to = 0
         if state:
