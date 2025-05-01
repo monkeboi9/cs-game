@@ -69,9 +69,12 @@ class Maze:
     def move_cell(self, cord, change):
         if self.is_valid(cord, change):
             new_cord = tuple(map(sum, zip(cord, change)))
-            if self.data[new_cord] == 0:
+            if self.data[new_cord] != 1:
                 self.data[new_cord] = self.data[cord]
                 self.data[cord] = 0
+                print(self.data[new_cord])
+                return new_cord
+        return cord
     # This function checks whether or not a coordinate is inbounds to prevent an array out of bounds error.
     def is_valid(self, cord, change = (0, 0)):
         # Adds the coordinate and the change variable together to produce the new coordinate.
