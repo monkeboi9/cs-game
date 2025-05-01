@@ -64,6 +64,7 @@ class Game:
         if enemy != -1:
             self.enemy.entities.remove(enemy)
         self.player.hearts -= 1
+        self.maze.make_end_pos()
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

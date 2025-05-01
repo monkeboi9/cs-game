@@ -16,7 +16,6 @@ class Visuals:
         transparency = 0xE0
         BLACK = (0x0, 0x0, 0x0, transparency)
         LIGHT_GREEN = (0x90, 0xee, 0x90, transparency)
-        RED = (0xFF, 0x0, 0x0, transparency)
         current_x = 0
         current_y = 0
         for y in range(data.shape[1]):
@@ -56,12 +55,12 @@ class Visuals:
         self.splash_layer.blit(self.assets.studio_splash, self.assets.studio_splash_rect)
         self.window.blit(self.splash_layer, (0, 0))
         pygame.display.update()
-        sleep(4)
+        sleep(2)
         self.splash_layer.fill((0x0, 0x0, 0x0, 0x0))
 class Assets:
     def __init__(self, resolution, unit):
-        self.background = self.load_and_scale("assets/background.jpg", resolution)
-        self.background_rect = self.background.get_rect()
+        self.background_farm = self.load_and_scale("assets/farm.png", resolution)
+        self.background_farm_rect = self.background_farm.get_rect()
         self.load_splash_screens(resolution)
         self.down = self.load_and_scale("assets/down.png", unit)
         self.up = self.load_and_scale("assets/up.png", unit)
@@ -69,6 +68,7 @@ class Assets:
         self.right = self.load_and_scale("assets/right.png", unit)
         self.key = self.load_and_scale("assets/key.png", unit)
         self.worm = self.load_and_scale("assets/worm.png", unit)
+        self.switch_bg()
     def load_splash_screens(self, resolution):
         self.studio_splash = self.load_and_scale("assets/studio.png", resolution)
         self.studio_splash_rect = self.studio_splash.get_rect()
@@ -76,3 +76,6 @@ class Assets:
         image = pygame.image.load(file)
         image = pygame.transform.scale(image, (unit, unit))
         return image
+    def switch_bg(self):
+        self.background = self.background_farm
+        self.background_rect = self.background_farm_rect
