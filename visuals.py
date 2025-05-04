@@ -45,12 +45,23 @@ class Visuals:
             self.first_layer.blit(self.assets.left, pos)
         if direction == "right":
             self.first_layer.blit(self.assets.right, pos)
-    def draw(self, data, direction):
+    def draw(self, data, direction, level, lives):
         self.first_layer.fill((0x0, 0x0, 0x0, 0x0))
         self.window.blit(self.assets.background, self.assets.background_rect)
         self.draw_maze_data(data, direction)
         self.window.blit(self.first_layer, (0, 0))
+        self.draw_status_bar(level, lives)
         pygame.display.update()
+    def draw_status_bar(self, level, lives):
+        font = pygame.font.SysFont("arial", 24, bold=True)
+        text_color = (255, 255, 255)
+        background_color = (0, 0, 0, 128)
+        status_surface = pygame.Surface((self.WINDOW_RES, 30), pygame.SRCALPHA)
+        status_surface.fill(background_color)
+        status_text = f"Level: {level}    Lives: {lives}"
+        text_surface = font.render(status_text, True, text_color)
+        status_surface.blit(text_surface, (10, 5))
+        self.window.blit(status_surface, (0, 0))
     def show_start_splash(self):
         studio_splash = pygame.image.load("assets/studio.png")
         studio_splash_rect = studio_splash.get_rect()
@@ -64,22 +75,50 @@ class Visuals:
         self.window.blit(self.splash_layer, (0, 0))
         pygame.display.update()
         sleep(2)
+    def show_game_over(self):
+        death_splash = pygame.image.load("assets/death.png")
+        death_splash_rect = death_splash.get_rect()
+        self.splash_layer.blit(death_splash, death_splash_rect)
+        self.window.blit(self.splash_layer, (0, 0))
+        pygame.display.update()
+        sleep(3)
+    def show_win_screen(self):
+        win_splash = pygame.image.load("assets/win.png")
+        win_splash_rect = win_splash.get_rect()
+        self.splash_layer.blit(win_splash, win_splash_rect)
+        self.window.blit(self.splash_layer, (0, 0))
+        pygame.display.update()
+        sleep(3)
 
 class Assets:
     def __init__(self, resolution, unit):
-        self.background_farm = self.load_and_scale("assets/farm.png", resolution)
-        self.background_farm_rect = self.background_farm.get_rect()
+        self.resolution = resolution
+        self.unit = unit
+        self.background_images = [
+            self.load_and_scale_bg("assets/table.png"),
+            self.load_and_scale_bg("assets/farm.png"),
+            self.load_and_scale_bg("assets/kitchen.png"),
+        ]
+        self.background_index = 0
+        self.background = self.background_images[self.background_index]
+        self.background_rect = self.background.get_rect()
+
         self.down = self.load_and_scale("assets/down.png", unit)
         self.up = self.load_and_scale("assets/up.png", unit)
         self.left = self.load_and_scale("assets/left.png", unit)
         self.right = self.load_and_scale("assets/right.png", unit)
         self.key = self.load_and_scale("assets/key.png", unit)
         self.worm = self.load_and_scale("assets/worm.png", unit)
-        self.switch_bg()
+
     def load_and_scale(self, file, unit):
         image = pygame.image.load(file)
-        image = pygame.transform.scale(image, (unit, unit))
-        return image
+        return pygame.transform.scale(image, (unit, unit))
+
+    def load_and_scale_bg(self, file):
+        image = pygame.image.load(file)
+        return pygame.transform.scale(image, (self.resolution, self.resolution))
+
     def switch_bg(self):
-        self.background = self.background_farm
-        self.background_rect = self.background_farm_rect
+        self.background_index = (self.background_index + 1) % len(self.background_images)
+        self.background = self.background_images[self.background_index]
+        self.background_rect = self.background.get_rect()
