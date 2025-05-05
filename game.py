@@ -25,7 +25,11 @@ class Game:
         self.clock = pygame.time.Clock()
         pygame.init()
         self.visuals.show_start_splash()  # Show splash screen at start
-
+        # Loads and plays music
+        pygame.mixer.init()
+        pygame.mixer.music.load("assets/music.wav")
+        pygame.mixer.music.set_volume(0.7)
+        pygame.mixer.music.play(-1)
     def update(self):
         # Called every frame to update the game
         self.check_events()
@@ -69,8 +73,10 @@ class Game:
 
     def check_key_for_portal(self):
         # Check if player picked up the key
-        if self.player.pos == self.key.pos:
+        if self.player.pos == self.key.pos and not self.player.has_key:
             self.player.has_key = True
+            sound = pygame.mixer.Sound("assets/key.mp3")
+            sound.play()
 
     def check_enemies(self):
         # Check for collision with active enemies
@@ -82,18 +88,25 @@ class Game:
 
     def game_over(self):
         # End the game and quit
+        pygame.mixer.music.pause()
+        sound = pygame.mixer.Sound("assets/death.wav")
+        sound.play()
         self.visuals.show_game_over()
         pygame.quit()
         sys.exit()
 
     def you_win(self):
         # Player won the game
+        sound = pygame.mixer.Sound("assets/yay.mp3")
+        sound.play()
         self.visuals.show_win_screen()
         pygame.quit()
         sys.exit()
 
     def kill_player(self, enemy=-1):
         # Reset player position and update health on death
+        sound = pygame.mixer.Sound("assets/damage.mp3")
+        sound.play()
         self.maze.data[self.player.pos] = 0  # Clear player position
         self.maze.data[self.maze.start_pos] = 2  # Mark start position
         self.player.pos = self.maze.start_pos  # Move player to start

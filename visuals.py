@@ -94,7 +94,7 @@ class Visuals:
         self.splash_layer.blit(death_splash, death_splash_rect)
         self.window.blit(self.splash_layer, (0, 0))
         pygame.display.update()
-        sleep(3)
+        sleep(5.3)
 
     # Show the win screen
     def show_win_screen(self):
